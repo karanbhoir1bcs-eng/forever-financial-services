@@ -5,18 +5,26 @@
  */
 export async function submitLead(data) {
   try {
-    const response = await fetch('/api/leads', {
+    const formData = {
+      access_key: 'ee3d4a29-5c29-48e9-9ef4-98a73a488c2c',
+      subject: 'New Lead from Forever Financial Services',
+      from_name: 'ForeverFS Website',
+      ...data
+    };
+
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(formData),
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.error || 'Something went wrong. Please try again.');
+      throw new Error(result.message || 'Something went wrong. Please try again.');
     }
 
     return result;
